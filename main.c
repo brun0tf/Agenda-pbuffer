@@ -11,7 +11,6 @@ int *i, *a, *n;
 //a: menu
 //n: numero de pessoas
 void *pbuffer = NULL;
-
 void adiciona (struct pessoa *p){
     (*n)++;
     pbuffer = realloc (pbuffer, (sizeof (int))* 3 + (sizeof (struct pessoa)) * (*n));
@@ -23,35 +22,77 @@ void adiciona (struct pessoa *p){
     scanf ("%s", (p->nome));
     scanf ("%d", &(p->idade));
 }
+void exclui (struct pessoa *p){
+    p = (struct pessoa*) n + 1;
+    for (*i = 0; *i < *n; (*i)++, p++){
+        if (p->idade == *a){
+            for(*a = *i; *a < ((*n) - 1); (*a)++){
+              *p = *(p+1);
+              p++;
+            }
+            p =(struct pessoa*) malloc (sizeof (struct pessoa));
+            free(p);
 
+            (*n)--;
+            pbuffer = realloc (pbuffer, (sizeof (int))* 3 + (sizeof (struct pessoa)) * (*n));
+            return;
+        }
+    }
+    puts ("\npessoa inexistente na agenda\n");
+}
+void busca (struct pessoa *p){
+    p = (struct pessoa*) n + 1;
+    for (*i = 0; *i < (*n); (*i)++, p++){
+        if (p->idade == *a){
+            printf ("\n%s encontrad@!\n", p->nome);
+            return;
+        }
+    }
+    printf ("\nnao encontrad@!");
+}
 void lista (struct pessoa *p){
     p = (struct pessoa*) n + 1;
-    for (*i = 0; *i < *n; (*i)++){
+    for (*i = 0; *i < (*n); (*i)++){
         printf ("nome: %s", p->nome);
         printf ("\tidade: %d\n", p->idade);
         p++;
     }
 }
-
 int main (){
     struct pessoa *p;
+    char *aux;
     pbuffer = malloc ((sizeof (int)) * 3);
     i = (int*) pbuffer;
     a = i + 1;
     n = a + 1;
     *a = 2000;
     *n = 0;
-    while (*a != 0){
-        printf ("1.add\t2.lista\t0.sair\na: ");
+    while (*a != 9){
+        printf ("1.add\t2.exclui\t3.lista\t4.busca\t1000.sair\nescolha: ");
         scanf("%d", a);
         switch (*a){
         case 1:
             adiciona(p);
             break;
         case 2:
+            puts ("idade da pessoa: ");
+            scanf ("%d", a);
+            exclui(p);
+            break;
+        case 3:
             lista(p);
             break;
+        case 4:
+            puts ("idade da pessoa: ");
+            scanf ("%d", a);
+            busca(p);
+            break;
+        case 1000:
+            free(pbuffer);
+            exit(1);
+            break;
         default:
+            puts("\n???\n");
             break;
         }
     }
