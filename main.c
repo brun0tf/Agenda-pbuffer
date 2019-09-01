@@ -13,7 +13,7 @@ int *i, *a, *n;
 void *pbuffer = NULL;
 void adiciona (struct pessoa *p){
     (*n)++;
-    pbuffer = realloc (pbuffer, (sizeof (int))* 3 + (sizeof (struct pessoa)) * (*n));
+    pbuffer = realloc (pbuffer, (20 + sizeof (int))* 3 + (sizeof (struct pessoa)) * (*n));
     i = (int*) pbuffer;
     a = i + 1;
     n = a + 1;
@@ -30,11 +30,8 @@ void exclui (struct pessoa *p){
               *p = *(p+1);
               p++;
             }
-            p =(struct pessoa*) malloc (sizeof (struct pessoa));
-            free(p);
-
             (*n)--;
-            pbuffer = realloc (pbuffer, (sizeof (int))* 3 + (sizeof (struct pessoa)) * (*n));
+            pbuffer = realloc (pbuffer, (20 + sizeof (int))* 3 + (sizeof (struct pessoa)) * (*n));
             return;
         }
     }
@@ -52,6 +49,10 @@ void busca (struct pessoa *p){
 }
 void lista (struct pessoa *p){
     p = (struct pessoa*) n + 1;
+    if (*n == 0){
+        puts ("agenda vazia\n");
+        return;
+    }
     for (*i = 0; *i < (*n); (*i)++){
         printf ("nome: %s", p->nome);
         printf ("\tidade: %d\n", p->idade);
@@ -62,13 +63,14 @@ int main (){
     struct pessoa *p;
     char *aux;
     pbuffer = malloc ((sizeof (int)) * 3);
+    if (pbuffer == NULL) printf ("erro ao alocar!");
     i = (int*) pbuffer;
     a = i + 1;
     n = a + 1;
     *a = 2000;
     *n = 0;
-    while (*a != 9){
-        printf ("1.add\t2.exclui\t3.lista\t4.busca\t1000.sair\nescolha: ");
+    while (*a != 1000){
+        printf ("1.add   2.exclui   3.lista   4.busca   1000.sair\nescolha: ");
         scanf("%d", a);
         switch (*a){
         case 1:
